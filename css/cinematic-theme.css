@@ -1,0 +1,518 @@
+/* Variáveis e Tema Cinematográfico */
+:root {
+    --black-deep: #0A0A0A;
+    --black-elevated: #141414;
+    --black-surface: #1A1A1A;
+    --gold: #D4AF37;
+    --gold-hover: #F4D03F;
+    --gold-dim: #8B6914;
+    --red-curtain: #8B0000;
+    --red-bright: #B22222;
+    --white-soft: #F5F5F5;
+    --white-dim: #A0A0A0;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --shadow-cinematic: 0 8px 32px rgba(212, 175, 55, 0.15);
+    --transition-curtain: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset e Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--black-deep);
+    color: var(--white-soft);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Loading Screen */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--black-deep);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s var(--transition-curtain);
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.projector {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.projector-light {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    animation: projectorPulse 1.5s infinite;
+    transform: translate(-50%, -50%);
+}
+
+.film-reel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--red-curtain);
+    border-radius: 50%;
+    animation: reelSpin 2s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+.film-reel::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 15px;
+    height: 15px;
+    background: var(--black-deep);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes projectorPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.7); }
+}
+
+@keyframes reelSpin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.loading-text {
+    margin-top: 20px;
+    font-family: var(--font-serif);
+    color: var(--gold);
+    font-size: 1.2rem;
+    animation: fadeText 2s infinite;
+}
+
+@keyframes fadeText {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* Navegação Principal */
+.main-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-icon {
+    font-size: 2rem;
+}
+
+.logo-text {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+
+.gold-text {
+    color: var(--gold);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-link {
+    color: var(--white-dim);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s var(--transition-curtain);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-link:hover {
+    color: var(--gold);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.nav-link.active {
+    color: var(--gold);
+    background: rgba(212, 175, 55, 0.15);
+    font-weight: 600;
+}
+
+.btn-login {
+    background: var(--gold);
+    color: var(--black-deep);
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: var(--font-sans);
+}
+
+.btn-login:hover {
+    background: var(--gold-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-cinematic);
+}
+
+/* Container Principal */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page {
+    display: none;
+    animation: pageFadeIn 0.5s var(--transition-curtain);
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes pageFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--white-soft);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+}
+
+/* Grid de Filmes */
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.movie-card {
+    background: var(--black-elevated);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s var(--transition-curtain);
+    cursor: pointer;
+    position: relative;
+}
+
+.movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-cinematic);
+}
+
+.movie-poster {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    transition: transform 0.4s var(--transition-curtain);
+}
+
+.movie-card:hover .movie-poster {
+    transform: scale(1.05);
+}
+
+.movie-card-info {
+    padding: 1rem;
+}
+
+.movie-card-title {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--white-soft);
+}
+
+.movie-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--white-dim);
+    font-size: 0.9rem;
+}
+
+.rating-badge {
+    background: var(--gold);
+    color: var(--black-deep);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Modal Cinematográfico */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    overflow-y: auto;
+    animation: curtainOpen 0.5s var(--transition-curtain);
+}
+
+.modal.active {
+    display: block;
+}
+
+@keyframes curtainOpen {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: var(--black-elevated);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: var(--white-dim);
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 10;
+}
+
+.close-modal:hover {
+    color: var(--gold);
+}
+
+/* Elementos Cinematográficos */
+.cinematic-card {
+    background: var(--black-surface);
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s;
+}
+
+.cinematic-card:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: var(--shadow-cinematic);
+}
+
+.cinematic-input {
+    width: 100%;
+    background: var(--black-elevated);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    color: var(--white-soft);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    transition: all 0.3s;
+}
+
+.cinematic-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.cinematic-select {
+    background: var(--black-elevated);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    color: var(--white-soft);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    cursor: pointer;
+}
+
+.btn-gold {
+    background: var(--gold);
+    color: var(--black-deep);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: var(--font-sans);
+}
+
+.btn-gold:hover {
+    background: var(--gold-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-cinematic);
+}
+
+/* Rating Stars */
+.rating-stars {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.star {
+    font-size: 2rem;
+    color: var(--white-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.star:hover,
+.star.active {
+    color: var(--gold);
+    transform: scale(1.2);
+}
+
+/* Perfil */
+.profile-header {
+    display: flex;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2rem;
+}
+
+.profile-avatar {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    object-fit: cover;
+}
+
+.level-badge {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--black-deep);
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.xp-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--black-elevated);
+    border-radius: 4px;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.xp-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    border-radius: 4px;
+    transition: width 0.5s;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}

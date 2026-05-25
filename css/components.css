@@ -1,0 +1,471 @@
+/* css/components.css */
+/* Estilos para todos os componentes do Cinema Lendário */
+
+/* ============ STAR RATING ============ */
+.star-rating-container {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0.5rem 0;
+}
+
+.star {
+    font-size: 2rem;
+    color: var(--white-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.star:hover {
+    transform: scale(1.2);
+}
+
+.star.active {
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.rating-label {
+    margin-left: 1rem;
+    color: var(--white-dim);
+    font-size: 0.9rem;
+}
+
+.mini-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.mini-star {
+    font-size: 0.9rem;
+}
+
+.mini-star.filled {
+    color: var(--gold);
+}
+
+.mini-star.half {
+    color: var(--gold);
+    opacity: 0.7;
+}
+
+.mini-star.empty {
+    color: var(--white-dim);
+}
+
+.rating-number {
+    font-weight: 700;
+    color: var(--white-soft);
+    margin-left: 0.3rem;
+}
+
+/* Rating Breakdown */
+.rating-breakdown {
+    padding: 1rem 0;
+}
+
+.breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.breakdown-label {
+    width: 40px;
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.breakdown-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--black-elevated);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.breakdown-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.breakdown-count {
+    width: 30px;
+    text-align: right;
+    color: var(--white-dim);
+    font-size: 0.9rem;
+}
+
+.breakdown-percentage {
+    width: 50px;
+    text-align: right;
+    color: var(--white-dim);
+    font-size: 0.85rem;
+}
+
+/* ============ PROFILE CARD ============ */
+.profile-card {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.profile-header-section {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.avatar-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    object-fit: cover;
+}
+
+.level-badge {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    color: var(--black-deep);
+    font-weight: 700;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.profile-main-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--white-soft);
+    margin-bottom: 0.5rem;
+}
+
+.profile-bio {
+    color: var(--white-dim);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--white-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* XP Bar */
+.xp-section {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(212, 175, 55, 0.05);
+    border-radius: 8px;
+}
+
+.xp-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--white-dim);
+}
+
+.xp-bar {
+    width: 100%;
+    height: 12px;
+    background: var(--black-elevated);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.xp-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.xp-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: xpShine 2s infinite;
+}
+
+@keyframes xpShine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.xp-percentage {
+    display: block;
+    text-align: right;
+    color: var(--gold);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+}
+
+/* Badges */
+.badges-section {
+    margin-top: 2rem;
+}
+
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.badge-card {
+    background: var(--black-elevated);
+    border: 2px solid;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.badge-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.badge-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.badge-name {
+    font-size: 0.95rem;
+    color: var(--white-soft);
+    margin-bottom: 0.3rem;
+}
+
+.badge-description {
+    font-size: 0.8rem;
+    color: var(--white-dim);
+    margin-bottom: 0.5rem;
+}
+
+.badge-rarity {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.badge-rarity.common { background: #A0A0A0; color: #000; }
+.badge-rarity.rare { background: #4169E1; color: #FFF; }
+.badge-rarity.epic { background: #8B008B; color: #FFF; }
+.badge-rarity.legendary { background: #FFD700; color: #000; }
+
+/* Activity */
+.recent-activity {
+    margin-top: 2rem;
+}
+
+.activity-list {
+    margin-top: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.activity-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.activity-content p {
+    color: var(--white-dim);
+    margin-bottom: 0.2rem;
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: var(--white-dim);
+    opacity: 0.7;
+}
+
+/* ============ LEADERBOARD ============ */
+.leaderboard-list {
+    margin-top: 1rem;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: var(--black-elevated);
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.leaderboard-item:hover {
+    background: var(--black-surface);
+    transform: translateX(5px);
+}
+
+.leaderboard-item.top-three {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(139, 0, 0, 0.1));
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.rank {
+    font-size: 1.5rem;
+    font-weight: 700;
+    width: 50px;
+    text-align: center;
+}
+
+.rank.medal {
+    font-size: 2rem;
+}
+
+.leader-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+}
+
+.leader-info {
+    flex: 1;
+}
+
+.leader-info h4 {
+    color: var(--white-soft);
+    margin-bottom: 0.2rem;
+}
+
+.leader-level {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.leader-xp {
+    text-align: right;
+}
+
+.xp-number {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gold);
+}
+
+.xp-label {
+    font-size: 0.8rem;
+    color: var(--white-dim);
+}
+
+/* ============ TOAST NOTIFICATION ============ */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: var(--white-soft);
+    font-weight: 500;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    z-index: 10000;
+    max-width: 350px;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-info {
+    background: #2196F3;
+}
+
+.toast-success {
+    background: #4CAF50;
+}
+
+.toast-warning {
+    background: #FF9800;
+}
+
+.toast-error {
+    background: #f44336;
+}
+
+/* ============ RESPONSIVO ============ */
+@media (max-width: 768px) {
+    .profile-header-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-stats {
+        justify-content: center;
+    }
+
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .leaderboard-item {
+        flex-wrap: wrap;
+    }
+
+    .toast {
+        left: 20px;
+        right: 20px;
+        max-width: none;
+    }
+}
