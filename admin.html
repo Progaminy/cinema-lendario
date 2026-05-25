@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🔐 Admin - Cinema Lendário</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0A0A0A; --surface: #141414; --elevated: #1A1A1A;
+            --gold: #D4AF37; --red: #8B0000; --text: #F5F5F5;
+            --text-dim: #A0A0A0; --border: rgba(212,175,55,0.2);
+            --green: #4CAF50; --blue: #2196F3; --orange: #FF6600;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+        
+        .admin-container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+        
+        /* LOGIN */
+        .admin-login {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 1rem;
+        }
+        .admin-login.hidden { display: none; }
+        .login-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 2.5rem; width: 100%; max-width: 400px;
+            text-align: center;
+        }
+        .login-card h1 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        .login-card h1 span { color: var(--gold); }
+        .login-card p { color: var(--text-dim); margin-bottom: 1.5rem; }
+        .login-card input {
+            width: 100%; background: var(--elevated); border: 1px solid var(--border);
+            color: var(--text); padding: 0.9rem 1rem; border-radius: 10px;
+            font-family: 'Inter', sans-serif; font-size: 1rem; margin-bottom: 1rem;
+            text-align: center; letter-spacing: 3px;
+        }
+        .login-card input:focus { outline: none; border-color: var(--gold); }
+        .login-card button {
+            width: 100%; background: var(--gold); color: var(--bg);
+            border: none; padding: 0.9rem; border-radius: 10px;
+            font-weight: 700; font-size: 1rem; cursor: pointer; font-family: 'Inter', sans-serif;
+        }
+        .login-card button:hover { opacity: 0.9; }
+        .error-msg { color: #f44336; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+
+        /* HEADER */
+        .admin-header {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 1rem;
+        }
+        .admin-header h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+        .admin-header h1 span { color: var(--gold); }
+
+        /* TABS */
+        .admin-tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+            overflow-x: auto; padding-bottom: 0.5rem;
+        }
+        .admin-tab {
+            background: var(--surface); border: 1px solid var(--border);
+            color: var(--text-dim); padding: 0.6rem 1.2rem; border-radius: 8px;
+            cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.85rem;
+            white-space: nowrap; transition: all 0.3s;
+        }
+        .admin-tab:hover, .admin-tab.active {
+            border-color: var(--gold); color: var(--gold);
+            background: rgba(212,175,55,0.1);
+        }
+        .admin-tab.active { background: var(--gold); color: var(--bg); font-weight: 600; }
+        .badge-count {
+            background: var(--red); color: #FFF; padding: 0.1rem 0.5rem;
+            border-radius: 10px; font-size: 0.7rem; margin-left: 0.3rem;
+        }
+
+        /* CARDS */
+        .admin-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;
+        }
+        .admin-card h3 { color: var(--gold); margin-bottom: 1rem; font-family: 'Playfair Display', serif; }
+
+        /* STATS */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem; margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.2rem; text-align: center;
+        }
+        .stat-number { font-size: 2rem; font-weight: 700; color: var(--gold); }
+        .stat-label { color: var(--text-dim); font-size: 0.8rem; margin-top: 0.3rem; }
+
+        /* ITEMS */
+        .admin-item {
+            background: var(--elevated); padding: 1rem; border-radius: 8px;
+            margin-bottom: 0.5rem; display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .admin-item .item-info { flex: 1; min-width: 200px; }
+        .admin-item .item-title { font-weight: 600; }
+        .admin-item .item-meta { color: var(--text-dim); font-size: 0.8rem; }
+        .admin-item .item-actions { display: flex; gap: 0.3rem; }
+
+        /* BUTTONS */
+        .btn {
+            padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;
+            font-weight: 600; font-family: 'Inter', sans-serif; border: none;
+            font-size: 0.8rem; transition: all 0.3s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-gold { background: var(--gold); color: var(--bg); }
+        .btn-green { background: var(--green); color: #FFF; }
+        .btn-red { background: var(--red); color: #FFF; }
+        .btn-blue { background: var(--blue); color: #FFF; }
+        .btn-orange { background: var(--orange); color: #FFF; }
+        .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.7rem; }
+
+        /* STATUS */
+        .status-pending { color: #FF9800; }
+        .status-completed { color: #4CAF50; }
+        .status-badge {
+            display: inline-block; padding: 0.15rem 0.5rem; border-radius: 10px;
+            font-size: 0.7rem; font-weight: 600;
+        }
+        .status-badge.pending { background: rgba(255,152,0,0.2); color: #FF9800; }
+        .status-badge.completed { background: rgba(76,175,80,0.2); color: #4CAF50; }
+
+        /* SEARCH */
+        .admin-search {
+            display: flex; gap: 0.5rem; margin-bottom: 1rem;
+        }
+        .admin-search input {
+            flex: 1; background: var(--elevated); border: 1px solid var(--border);
+            color: var(--text); padding: 0.7rem 1rem; border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .admin-search input:focus { outline: none; border-color: var(--gold); }
+
+        /* EMPTY */
+        .empty-state { text-align: center; padding: 2rem; color: var(--text-dim); }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .admin-header { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <div class="admin-login" id="adminLogin">
+        <div class="login-card">
+            <h1>🔐 Admin <span>Cinema Lendário</span></h1>
+            <p>Digite o código de acesso</p>
+            <input type="password" id="adminCode" placeholder="••••••••" maxlength="20" onkeyup="if(event.key==='Enter')adminLogin()">
+            <button onclick="adminLogin()">🔓 Acessar</button>
+            <p class="error-msg" id="loginError">Código incorreto!</p>
+        </div>
+    </div>
+
+    <!-- PAINEL -->
+    <div class="admin-container hidden" id="adminPanel">
+        <!-- HEADER -->
+        <div class="admin-header">
+            <h1>🔐 Painel <span>Administrativo</span></h1>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+                <span style="color:var(--text-dim); font-size:0.8rem;" id="adminDate"></span>
+                <button class="btn btn-red btn-sm" onclick="adminLogout()">🚪 Sair</button>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid" id="adminStats"></div>
+
+        <!-- TABS -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" onclick="showTab('suggestions')">💡 Sugestões <span class="badge-count" id="suggestionsCount">0</span></button>
+            <button class="admin-tab" onclick="showTab('clicks')">👆 Cliques <span class="badge-count" id="clicksCount">0</span></button>
+            <button class="admin-tab" onclick="showTab('notifications')">🔔 Notificações</button>
+            <button class="admin-tab" onclick="showTab('users')">👥 Usuários</button>
+            <button class="admin-tab" onclick="showTab('downloads')">⬇️ Downloads</button>
+        </div>
+
+        <!-- TAB CONTENT -->
+        <div id="tabContent"></div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const ADMIN_CODE = 'luz299792456';
+        let isLoggedIn = false;
+
+        // ============================================
+        // LOGIN
+        // ============================================
+        function adminLogin() {
+            const code = document.getElementById('adminCode').value.trim();
+            
+            if (code === ADMIN_CODE) {
+                isLoggedIn = true;
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                document.getElementById('adminDate').textContent = new Date().toLocaleDateString('pt-BR');
+                initPanel();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('loginError').style.display = 'none';
+                }, 2000);
+            }
+        }
+
+        function adminLogout() {
+            isLoggedIn = false;
+            document.getElementById('adminLogin').classList.remove('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('adminCode').value = '';
+        }
+
+        // ============================================
+        // DADOS
+        // ============================================
+        function getSuggestions() {
+            return JSON.parse(localStorage.getItem('cinema_suggestions') || '[]');
+        }
+
+        function saveSuggestions(data) {
+            localStorage.setItem('cinema_suggestions', JSON.stringify(data));
+        }
+
+        function getNotFoundClicks() {
+            return JSON.parse(localStorage.getItem('cinema_notfound_clicks') || '[]');
+        }
+
+        function getNotifications() {
+            return JSON.parse(localStorage.getItem('cinema_notifications') || '[]');
+        }
+
+        function getUsers() {
+            const user = localStorage.getItem('cinema_user');
+            return user ? [JSON.parse(user)] : [];
+        }
+
+        function getDownloads() {
+            return JSON.parse(localStorage.getItem('cinema_downloads') || '[]');
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        function initPanel() {
+            updateStats();
+            showTab('suggestions');
+            updateBadges();
+        }
+
+        function updateStats() {
+            const suggestions = getSuggestions();
+            const clicks = getNotFoundClicks();
+            const notifications = getNotifications();
+            const users = getUsers();
+            const downloads = getDownloads();
+            
+            const pendingSuggestions = suggestions.filter(s => s.status === 'pending').length;
+            const completedSuggestions = suggestions.filter(s => s.status === 'completed').length;
+            
+            document.getElementById('adminStats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${suggestions.length}</div>
+                    <div class="stat-label">💡 Sugestões (${pendingSuggestions} pendentes)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${clicks.length}</div>
+                    <div class="stat-label">👆 Cliques não encontrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${notifications.length}</div>
+                    <div class="stat-label">🔔 Notificações enviadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${users.length}</div>
+                    <div class="stat-label">👥 Usuários cadastrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${downloads.length}</div>
+                    <div class="stat-label">⬇️ Downloads realizados</div>
+                </div>
+            `;
+        }
+
+        function updateBadges() {
+            const suggestions = getSuggestions();
+            const clicks = getNotFoundClicks();
+            const pending = suggestions.filter(s => s.status === 'pending').length;
+            const pendingClicks = clicks.filter(c => c.status === 'pending').length;
+            
+            document.getElementById('suggestionsCount').textContent = pending;
+            document.getElementById('clicksCount').textContent = pendingClicks;
+        }
+
+        // ============================================
+        // TABS
+        // ============================================
+        function showTab(tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            event?.target?.classList.add('active');
+            
+            const content = document.getElementById('tabContent');
+            
+            switch(tab) {
+                case 'suggestions': renderSuggestions(); break;
+                case 'clicks': renderClicks(); break;
+                case 'notifications': renderNotifications(); break;
+                case 'users': renderUsers(); break;
+                case 'downloads': renderDownloads(); break;
+            }
+        }
+
+        // ============================================
+        // RENDER SUGGESTIONS
+        // ============================================
+        function renderSuggestions() {
+            const suggestions = getSuggestions();
+            const content = document.getElementById('tabContent');
+            
+            const pending = suggestions.filter(s => s.status === 'pending');
+            const completed = suggestions.filter(s => s.status === 'completed');
+            
+            let html = '<div class="admin-card"><h3>⏳ Sugestões Pendentes (' + pending.length + ')</h3>';
+            
+            if (pending.length === 0) {
+                html += '<p class="empty-state">Nenhuma sugestão pendente</p>';
+            } else {
+                pending.forEach(s => {
+                    html += `
+                    <div class="admin-item">
+                        <div class="item-info">
+                            <div class="item-title">${s.type === 'movie' ? '🎬' : '📺'} ${s.title}</div>
+                            <div class="item-meta">
+                                ${s.suggestedBy ? 'Por: ' + s.suggestedBy.name : 'Anônimo'} • 
+                                ${new Date(s.date).toLocaleDateString('pt-BR')}
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-green btn-sm" onclick="completeSuggestion(${s.id})">✅ Concluir</button>
+                            <button class="btn btn-red btn-sm" onclick="deleteSuggestion(${s.id})">🗑️</button>
+                        </div>
+                    </div>`;
+                });
+            }
+            html += '</div>';
+            
+            if (completed.length > 0) {
+                html += '<div class="admin-card"><h3>✅ Sugestões Concluídas (' + completed.length + ')</h3>';
+                completed.slice(0, 20).forEach(s => {
+                    html += `
+                    <div class="admin-item" style="opacity:0.7;">
+                        <div class="item-info">
+                            <div class="item-title">${s.type === 'movie' ? '🎬' : '📺'} ${s.title}</div>
+                            <div class="item-meta">Concluído em ${new Date(s.completedDate).toLocaleDateString('pt-BR')}</div>
+                        </div>
+                        <span class="status-badge completed">✅ Concluído</span>
+                    </div>`;
+                });
+                html += '</div>';
+            }
+            
+            content.innerHTML = html;
+        }
+
+        function completeSuggestion(id) {
+            const suggestions = getSuggestions();
+            const suggestion = suggestions.find(s => s.id === id);
+            
+            if (suggestion) {
+                suggestion.status = 'completed';
+                suggestion.completedDate = new Date().toISOString();
+                saveSuggestions(suggestions);
+                
+                // Notificar usuários
+                notifyContentAdded(suggestion.title, suggestion.type);
+                
+                updateStats();
+                updateBadges();
+                renderSuggestions();
+            }
+        }
+
+        function deleteSuggestion(id) {
+            if (!confirm('Tem certeza que deseja apagar esta sugestão?')) return;
+            
+            let suggestions = getSuggestions();
+            suggestions = suggestions.filter(s => s.id !== id);
+            saveSuggestions(suggestions);
+            
+            updateStats();
+            updateBadges();
+            renderSuggestions();
+        }
+
+        // ============================================
+        // RENDER CLICKS
+        // ============================================
+        function renderClicks() {
+            const clicks = getNotFoundClicks();
+            const content = document.getElementById('tabContent');
+            
+            let html = '<div class="admin-card"><h3>👆 Cliques em Conteúdo Não Encontrado (' + clicks.length + ')</h3>';
+            
+            if (clicks.length === 0) {
+                html += '<p class="empty-state">Nenhum registro</p>';
+            } else {
+                clicks.sort((a, b) => (b.count || 0) - (a.count || 0)).forEach(c => {
+                    html += `
+                    <div class="admin-item">
+                        <div class="item-info">
+                            <div class="item-title">${c.type === 'movie' ? '🎬' : c.type === 'series' ? '📺' : '🎬'} ${c.title}</div>
+                            <div class="item-meta">
+                                Clicado ${c.count || 1}x • 
+                                Último: ${new Date(c.lastClick).toLocaleDateString('pt-BR')}
+                                ${c.users ? ' • ' + c.users.length + ' usuários' : ''}
+                            </div>
+                            ${c.users ? '<div class="item-meta">Usuários: ' + c.users.map(u => u.name).join(', ') + '</div>' : ''}
+                        </div>
+                        <span class="status-badge ${c.status === 'completed' ? 'completed' : 'pending'}">
+                            ${c.status === 'completed' ? '✅' : '⏳'} ${c.status}
+                        </span>
+                    </div>`;
+                });
+            }
+            html += '</div>';
+            
+            content.innerHTML = html;
+        }
+
+        // ============================================
+        // RENDER NOTIFICATIONS
+        // ============================================
+        function renderNotifications() {
+            const notifications = getNotifications();
+            const content = document.getElementById('tabContent');
+            
+            let html = '<div class="admin-card"><h3>🔔 Notificações Enviadas (' + notifications.length + ')</h3>';
+            
+            if (notifications.length === 0) {
+                html += '<p class="empty-state">Nenhuma notificação enviada</p>';
+            } else {
+                notifications.slice(0, 50).reverse().forEach(n => {
+                    html += `
+                    <div class="admin-item">
+                        <div class="item-info">
+                            <div class="item-title">📧 ${n.title}</div>
+                            <div class="item-meta">Para: ${n.userContact} • ${new Date(n.date).toLocaleDateString('pt-BR')}</div>
+                            <div class="item-meta">${n.message}</div>
+                        </div>
+                        <span style="font-size:0.7rem; color:${n.read ? '#4CAF50' : '#FF9800'};">${n.read ? '✅ Lida' : '📩 Não lida'}</span>
+                    </div>`;
+                });
+            }
+            html += '</div>';
+            
+            content.innerHTML = html;
+        }
+
+        // ============================================
+        // RENDER USERS
+        // ============================================
+        function renderUsers() {
+            const users = getUsers();
+            const content = document.getElementById('tabContent');
+            
+            let html = '<div class="admin-card"><h3>👥 Usuários Cadastrados (' + users.length + ')</h3>';
+            
+            if (users.length === 0) {
+                html += '<p class="empty-state">Nenhum usuário cadastrado</p>';
+            } else {
+                users.forEach(u => {
+                    html += `
+                    <div class="admin-item">
+                        <div class="item-info">
+                            <div class="item-title">${u.avatar || '👤'} ${u.name}</div>
+                            <div class="item-meta">📧 ${u.contact} • 📱 ${u.method}</div>
+                            <div class="item-meta">Cadastro: ${new Date(u.createdAt).toLocaleDateString('pt-BR')}</div>
+                        </div>
+                    </div>`;
+                });
+            }
+            html += '</div>';
+            
+            content.innerHTML = html;
+        }
+
+        // ============================================
+        // RENDER DOWNLOADS
+        // ============================================
+        function renderDownloads() {
+            const downloads = getDownloads();
+            const content = document.getElementById('tabContent');
+            
+            let html = '<div class="admin-card"><h3>⬇️ Downloads Realizados (' + downloads.length + ')</h3>';
+            
+            if (downloads.length === 0) {
+                html += '<p class="empty-state">Nenhum download realizado</p>';
+            } else {
+                downloads.slice(0, 50).reverse().forEach(d => {
+                    html += `
+                    <div class="admin-item">
+                        <div class="item-info">
+                            <div class="item-title">⬇️ ${d.title}</div>
+                            <div class="item-meta">Tipo: ${d.type} • Tamanho: ${d.size || 'N/A'}</div>
+                            <div class="item-meta">${new Date(d.date).toLocaleDateString('pt-BR')} • Status: ${d.status}</div>
+                        </div>
+                        <span class="status-badge ${d.status === 'completed' ? 'completed' : 'pending'}">${d.status}</span>
+                    </div>`;
+                });
+            }
+            html += '</div>';
+            
+            content.innerHTML = html;
+        }
+
+        // ============================================
+        // NOTIFICAR USUÁRIOS
+        // ============================================
+        function notifyContentAdded(title, type) {
+            const clicks = getNotFoundClicks();
+            const relevantClicks = clicks.filter(c => 
+                c.title.toLowerCase() === title.toLowerCase() && c.type === type
+            );
+            
+            const notifications = getNotifications();
+            const notifiedUsers = new Set();
+            
+            relevantClicks.forEach(click => {
+                if (click.users) {
+                    click.users.forEach(user => {
+                        if (!notifiedUsers.has(user.contact)) {
+                            notifications.push({
+                                id: Date.now() + Math.random(),
+                                userContact: user.contact,
+                                title: title,
+                                type: type,
+                                message: `✅ "${title}" já está disponível no Cinema Lendário! Venha conferir!`,
+                                date: new Date().toISOString(),
+                                read: false
+                            });
+                            notifiedUsers.add(user.contact);
+                        }
+                    });
+                }
+            });
+            
+            if (notifiedUsers.size > 0) {
+                localStorage.setItem('cinema_notifications', JSON.stringify(notifications));
+            }
+        }
+
+        // ============================================
+        // INIT CHECK
+        // ============================================
+        if (localStorage.getItem('cinema_admin_logged') === 'true') {
+            document.getElementById('adminLogin').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+            document.getElementById('adminDate').textContent = new Date().toLocaleDateString('pt-BR');
+            isLoggedIn = true;
+            initPanel();
+        }
+    </script>
+</body>
+</html>

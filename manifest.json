@@ -1,22 +1,124 @@
 {
     "name": "Cinema Lendário",
-    "short_name": "CinemaLendario",
-    "description": "Onde filmes se tornam lendas",
-    "start_url": "/",
+    "short_name": "CinemaLendário",
+    "description": "🎬 Onde filmes se tornam lendas - Catálogo completo de filmes e séries",
+    "start_url": "/cinema-lendario/index.html",
+    "scope": "/cinema-lendario/",
     "display": "standalone",
+    "display_override": ["standalone", "fullscreen", "minimal-ui"],
+    "orientation": "portrait-primary",
     "background_color": "#0A0A0A",
     "theme_color": "#0A0A0A",
-    "orientation": "portrait-primary",
+    "lang": "pt-BR",
+    "dir": "ltr",
+    "categories": ["entertainment", "movies", "video"],
+    "prefer_related_applications": false,
+    
     "icons": [
         {
-            "src": "icon-192.png",
-            "sizes": "192x192",
-            "type": "image/png"
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Crect width='72' height='72' rx='16' fill='%230A0A0A'/%3E%3Ctext x='36' y='48' text-anchor='middle' fill='%23D4AF37' font-size='40' font-family='serif'%3E🎬%3C/text%3E%3C/svg%3E",
+            "sizes": "72x72",
+            "type": "image/svg+xml",
+            "purpose": "any"
         },
         {
-            "src": "icon-512.png",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='20' fill='%230A0A0A'/%3E%3Ctext x='48' y='62' text-anchor='middle' fill='%23D4AF37' font-size='52' font-family='serif'%3E🎬%3C/text%3E%3C/svg%3E",
+            "sizes": "96x96",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='24' fill='%230A0A0A'/%3E%3Ctext x='64' y='82' text-anchor='middle' fill='%23D4AF37' font-size='64' font-family='serif'%3E🎬%3C/text%3E%3C/svg%3E",
+            "sizes": "128x128",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='144' height='144' viewBox='0 0 144 144'%3E%3Crect width='144' height='144' rx='28' fill='%230A0A0A'/%3E%3Ctext x='72' y='92' text-anchor='middle' fill='%23D4AF37' font-size='72' font-family='serif'%3E🎬%3C/text%3E%3C/svg%3E",
+            "sizes": "144x144",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%230A0A0A'/%3E%3Ctext x='96' y='122' text-anchor='middle' fill='%23D4AF37' font-size='96' font-family='serif'%3E🎬%3C/text%3E%3C/svg%3E",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230A0A0A'/%3E%3Ccircle cx='256' cy='256' r='180' fill='none' stroke='%23D4AF37' stroke-width='8'/%3E%3Ctext x='256' y='310' text-anchor='middle' fill='%23D4AF37' font-size='200' font-family='serif'%3E🎬%3C/text%3E%3C/svg%3E",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230A0A0A'/%3E%3Ccircle cx='256' cy='256' r='180' fill='none' stroke='%23D4AF37' stroke-width='8'/%3E%3Ctext x='256' y='310' text-anchor='middle' fill='%23D4AF37' font-size='200' font-family='serif'%3E🎬%3C/text%3E%3C/svg%3E",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "maskable"
         }
-    ]
+    ],
+    
+    "screenshots": [
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1080' height='1920'%3E%3Crect width='1080' height='1920' fill='%230A0A0A'/%3E%3Ctext x='540' y='960' text-anchor='middle' fill='%23D4AF37' font-size='80' font-family='sans-serif'%3E🎬 Cinema Lendário%3C/text%3E%3C/svg%3E",
+            "sizes": "1080x1920",
+            "type": "image/svg+xml",
+            "form_factor": "narrow",
+            "label": "Tela inicial do Cinema Lendário"
+        }
+    ],
+    
+    "shortcuts": [
+        {
+            "name": "🎬 Filmes",
+            "short_name": "Filmes",
+            "description": "Ver catálogo de filmes",
+            "url": "/cinema-lendario/index.html?view=movies",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' rx='16' fill='%230A0A0A'/%3E%3Ctext x='48' y='62' text-anchor='middle' font-size='48'%3E🎬%3C/text%3E%3C/svg%3E",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "📺 Séries",
+            "short_name": "Séries",
+            "description": "Ver catálogo de séries",
+            "url": "/cinema-lendario/index.html?view=series",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' rx='16' fill='%230A0A0A'/%3E%3Ctext x='48' y='62' text-anchor='middle' font-size='48'%3E📺%3C/text%3E%3C/svg%3E",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "🔍 Explorar",
+            "short_name": "Explorar",
+            "description": "Buscar filmes e séries",
+            "url": "/cinema-lendario/index.html?view=explore"
+        },
+        {
+            "name": "📋 Minhas Listas",
+            "short_name": "Listas",
+            "description": "Ver minhas listas",
+            "url": "/cinema-lendario/index.html?view=lists"
+        }
+    ],
+    
+    "related_applications": [],
+    
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    
+    "handle_links": "preferred",
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    },
+    
+    "id": "cinema-lendario-pwa-v1",
+    "protocol_handlers": []
 }
