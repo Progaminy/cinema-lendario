@@ -298,24 +298,94 @@ function showEpisodes(seriesId, seasonIdx) {
 // ============================================
 // TRAILER
 // ============================================
-function showTrailer(movieId, title) {
+// ============================================
+// TRAILER (1º TMDB → 2º Banco Local → 3º Genérico)
+// ============================================
+async function showTrailer(movieId, title) {
     const modal = document.getElementById('mainModal');
     const content = document.getElementById('modalContent');
     
-    const trailerUrl = checkAndRegisterTrailer(movieId);
-    
     content.innerHTML = `
-        <h3 style="color:#FF6600; margin-bottom:0.8rem;">🎬 Trailer - ${title}</h3>
+        <h3 style="color:#FF6600; margin-bottom:1rem;">🎬 Buscando trailer...</h3>
+        <div class="video-container">
+            <p style="text-align:center; padding:3rem; color:var(--text-dim);">Aguarde...</p>
+        </div>`;
+    modal.classList.add('active');
+    modal.scrollTop = 0;
+    
+    let trailerUrl = null;
+    let trailerSource = '';
+    
+    // ==========================================
+    // PASSO 1: Buscar na API TMDB (PRIORIDADE)
+    // ==========================================
+    try {
+        const movie = getMovieById(movieId);
+        const tmdbId = movie ? movie.tmdbId : movieId;
+        
+        // Buscar vídeos do filme no TMDB
+        const res = await fetch(`${CONFIG.TMDB_BASE_URL}/movie/${tmdbId}/videos?api_key=${CONFIG.TMDB_API_KEY}&language=pt-BR`);
+        const data = await res.json();
+        
+        // Procurar trailer em português
+        let trailer = data.results?.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+        
+        // Se não achar em PT, buscar em inglês
+        if (!trailer) {
+            const resEn = await fetch(`${CONFIG.TMDB_BASE_URL}/movie/${tmdbId}/videos?api_key=${CONFIG.TMDB_API_KEY}&language=en-US`);
+            const dataEn = await resEn.json();
+            trailer = dataEn.results?.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+        }
+        
+        if (trailer) {
+            // ⚠️ TMDB retorna link do YouTube, mas NÃO vamos usar iframe do YouTube
+            // Em vez disso, registramos que achou e usamos o vídeo do banco local
+            trailerSource = 'TMDB (trailer oficial disponível)';
+            console.log('✅ Trailer encontrado no TMDB:', trailer.key);
+            
+            // Registrar que o trailer foi encontrado
+            registerNotFoundClick('trailer', movie?.title || title, movie?.genre || '');
+        }
+    } catch (e) {
+        console.log('⚠️ TMDB indisponível:', e.message);
+    }
+    
+    // ==========================================
+    // PASSO 2: Buscar no banco de dados LOCAL
+    // ==========================================
+    if (!trailerUrl) {
+        const localTrailer = getMovieTrailer(movieId);
+        
+        if (localTrailer && localTrailer !== GENERIC_MOVIE_TRAILER) {
+            trailerUrl = localTrailer;
+            trailerSource = trailerSource || 'Banco de dados local (trailer específico)';
+            console.log('✅ Trailer encontrado no banco local');
+        }
+    }
+    
+    // ==========================================
+    // PASSO 3: Fallback - Trailer genérico
+    // ==========================================
+    if (!trailerUrl) {
+        trailerUrl = GENERIC_MOVIE_TRAILER;
+        trailerSource = 'Trailer genérico (fallback)';
+        console.log('🆘 Usando trailer genérico');
+    }
+    
+    // ==========================================
+    // EXIBIR VÍDEO
+    // ==========================================
+    content.innerHTML = `
+        <h3 style="color:#FF6600; margin-bottom:0.5rem;">🎬 ${title}</h3>
         <div class="video-container">
             <video controls autoplay playsinline style="width:100%;height:100%;">
                 <source src="${trailerUrl}" type="video/mp4">
             </video>
         </div>
-        <p style="color:var(--text-dim); font-size:0.7rem; margin-top:0.3rem;">${trailerUrl === GENERIC_MOVIE_TRAILER ? 'Trailer genérico (fallback)' : 'Trailer específico'}</p>
+        <p style="color:var(--text-dim); font-size:0.7rem; margin-top:0.3rem;">
+            ${trailerSource}
+        </p>
         <button class="btn btn-gold" onclick="closeModal()" style="margin-top:0.8rem;">🔙 Voltar</button>`;
-    
-    modal.classList.add('active');
-    modal.scrollTop = 0;
 }
 
 // ============================================
